@@ -1514,7 +1514,8 @@
       "method": "Transferencia",
       "contact": "097 882 7304",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 4,
@@ -1525,7 +1526,8 @@
       "method": "Transferencia",
       "contact": "099 804 4625",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 5,
@@ -1536,7 +1538,8 @@
       "method": "Transferencia",
       "contact": "096 260 9611",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 35.0
     },
     {
       "rowNumber": 6,
@@ -1547,7 +1550,8 @@
       "method": "Efectivo",
       "contact": "096 959 2033",
       "detail": "Entregados a Nicole",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 7,
@@ -1558,7 +1562,8 @@
       "method": "Transferencia",
       "contact": "099-546-2655",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 50.0
     },
     {
       "rowNumber": 8,
@@ -1569,7 +1574,8 @@
       "method": "Transferencia",
       "contact": "098 570 8153‬",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 40.0
     },
     {
       "rowNumber": 9,
@@ -1580,7 +1586,8 @@
       "method": "Transferencia",
       "contact": "099 320 3956",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 25.0
     },
     {
       "rowNumber": 10,
@@ -1591,7 +1598,8 @@
       "method": "Transferencia",
       "contact": "099-502-5259",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 11,
@@ -1602,7 +1610,8 @@
       "method": "Transferencia",
       "contact": "099-176-0355",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 12,
@@ -1613,7 +1622,8 @@
       "method": "Transferencia",
       "contact": "098-471-2051",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 13,
@@ -1624,7 +1634,8 @@
       "method": "Transferencia",
       "contact": "099-862-6876",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 14,
@@ -1635,7 +1646,8 @@
       "method": "Transferencia",
       "contact": "098-430-4830",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 15,
@@ -1646,7 +1658,8 @@
       "method": "Transferencia",
       "contact": "098-610-2791",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 16,
@@ -1657,7 +1670,8 @@
       "method": "Transferencia",
       "contact": "097-883-2354",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 70.0
     },
     {
       "rowNumber": 17,
@@ -1668,7 +1682,8 @@
       "method": "Transferencia",
       "contact": "099-806-7539",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 18,
@@ -1679,7 +1694,8 @@
       "method": "Transferencia",
       "contact": "098-419-1228",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 19,
@@ -1690,7 +1706,8 @@
       "method": "Transferencia",
       "contact": "098-651-9809",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 20,
@@ -1701,7 +1718,8 @@
       "method": "Depósito",
       "contact": "099-282-1790",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 50.0
     },
     {
       "rowNumber": 21,
@@ -1712,7 +1730,8 @@
       "method": "Transferencia",
       "contact": "099-718-0060",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 22,
@@ -1723,7 +1742,8 @@
       "method": "Transferencia",
       "contact": "099-389-6809",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 23,
@@ -1734,7 +1754,8 @@
       "method": "Transferencia",
       "contact": "096-767-8926",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 24,
@@ -1745,7 +1766,8 @@
       "method": "Transferencia",
       "contact": "096-008-6961",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 25,
@@ -1756,7 +1778,8 @@
       "method": "Transferencia",
       "contact": "099-493-9730‬",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 26,
@@ -1767,7 +1790,8 @@
       "method": "Transferencia",
       "contact": "099-493-9730‬",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 27,
@@ -1778,7 +1802,8 @@
       "method": "Transferencia",
       "contact": "098-388-9943",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 28,
@@ -1789,7 +1814,8 @@
       "method": "Efectivo",
       "contact": "57 3161394679",
       "detail": "Entregados a Nicole domingo 08/23",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 29,
@@ -1800,7 +1826,8 @@
       "method": "Transferencia",
       "contact": "096-763-2411",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 30,
@@ -1811,7 +1838,8 @@
       "method": "Transferencia",
       "contact": "099-921-3607",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 25.0
     },
     {
       "rowNumber": 31,
@@ -1822,7 +1850,8 @@
       "method": "Transferencia",
       "contact": "099-006-0083",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 85.0
     },
     {
       "rowNumber": 32,
@@ -1833,7 +1862,8 @@
       "method": "Transferencia",
       "contact": "096-301-9110",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 33,
@@ -1844,7 +1874,8 @@
       "method": "Transferencia",
       "contact": "096-826-1468",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 34,
@@ -1855,7 +1886,8 @@
       "method": "Transferencia",
       "contact": "096-189-1930",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 35,
@@ -1866,7 +1898,8 @@
       "method": "Transferencia",
       "contact": "099-095-2706",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 36,
@@ -1877,7 +1910,8 @@
       "method": "Transferencia",
       "contact": "098-305-3772",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 37,
@@ -1888,7 +1922,8 @@
       "method": "Transferencia",
       "contact": "096-143-6831",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 50.0
     },
     {
       "rowNumber": 38,
@@ -1899,7 +1934,8 @@
       "method": "Transferencia",
       "contact": "095-883-6341",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 50.0
     },
     {
       "rowNumber": 39,
@@ -1910,7 +1946,8 @@
       "method": "Transferencia",
       "contact": "099-116-3614",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 40,
@@ -1921,7 +1958,8 @@
       "method": "Transferencia",
       "contact": "099-340-3093",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 41,
@@ -1932,7 +1970,8 @@
       "method": "Transferencia",
       "contact": "098-330-6366",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 30.0
     },
     {
       "rowNumber": 42,
@@ -1943,7 +1982,8 @@
       "method": "Transferencia",
       "contact": "099-009-0217",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 43,
@@ -1954,7 +1994,8 @@
       "method": "Transferencia",
       "contact": "096-295-2538",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 44,
@@ -1965,7 +2006,8 @@
       "method": "Transferencia",
       "contact": "098-096-2529",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 30.0
     },
     {
       "rowNumber": 45,
@@ -1976,7 +2018,8 @@
       "method": "Transferencia",
       "contact": "096-390-8978",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 46,
@@ -1987,7 +2030,8 @@
       "method": "Transferencia",
       "contact": "096-853-8649",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 47,
@@ -1998,7 +2042,8 @@
       "method": "Transferencia",
       "contact": "099-579-6737",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 48,
@@ -2009,7 +2054,8 @@
       "method": "Depósito",
       "contact": "096-376-4959",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 15.0
     },
     {
       "rowNumber": 49,
@@ -2020,7 +2066,8 @@
       "method": "Datafast",
       "contact": "098-855-8500",
       "detail": "",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 50,
@@ -2031,7 +2078,8 @@
       "method": "Efectivo",
       "contact": "098-936-1763",
       "detail": "Entregados a Kika domingo 08/30",
-      "status": "pagado"
+      "status": "pagado",
+      "paidPercentage": 100.0
     },
     {
       "rowNumber": 51,
@@ -2042,7 +2090,8 @@
       "method": "Efectivo",
       "contact": "098-046-1132",
       "detail": "Entregados a Kika domingo 08/30",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 60.0
     },
     {
       "rowNumber": 52,
@@ -2053,7 +2102,8 @@
       "method": "Efectivo",
       "contact": "",
       "detail": "Entregados a Kika domingo 08/30",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 53,
@@ -2064,7 +2114,8 @@
       "method": "Transferencia",
       "contact": "098-196-7761",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 50.0
     },
     {
       "rowNumber": 54,
@@ -2075,7 +2126,8 @@
       "method": "Transferencia",
       "contact": "098-264-4918‬",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 55,
@@ -2086,7 +2138,8 @@
       "method": "Transferencia",
       "contact": "098-852-8819",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 56,
@@ -2097,7 +2150,8 @@
       "method": "Transferencia",
       "contact": "",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     },
     {
       "rowNumber": 57,
@@ -2108,7 +2162,8 @@
       "method": "Transferencia",
       "contact": "",
       "detail": "",
-      "status": "abonado"
+      "status": "abonado",
+      "paidPercentage": 20.0
     }
   ],
   "comprobantes": [

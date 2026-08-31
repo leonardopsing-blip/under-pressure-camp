@@ -1,0 +1,1 @@
+ALTER TABLE `campistas` MODIFY COLUMN `phone` varchar(191);

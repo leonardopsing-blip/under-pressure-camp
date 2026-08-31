@@ -19,6 +19,15 @@ export function CampistaCard({ campista, onPress }: { campista: Campista; onPres
           <Text className="text-sm text-foreground">Red en casa: {campista.homeNetworkAttends}{campista.homeNetworkName ? ` · ${campista.homeNetworkName}` : ''}</Text>
           <Text className="text-sm text-foreground">Alergia: {campista.hasAllergy}{campista.allergyDetail ? ` · ${campista.allergyDetail}` : ''}</Text>
         </View>
+        <View className="mt-4">
+          <View className="flex-row items-center justify-between">
+            <Text className="text-xs font-semibold uppercase tracking-wide text-muted">Porcentaje pagado</Text>
+            <Text className="text-sm font-bold text-foreground">{Math.round(campista.paidPercentage)}%</Text>
+          </View>
+          <View className="mt-2 h-2 overflow-hidden rounded-full bg-border">
+            <View style={{ width: `${Math.max(0, Math.min(100, campista.paidPercentage))}%` }} className="h-full rounded-full bg-primary" />
+          </View>
+        </View>
       </View>
     </Pressable>
   );

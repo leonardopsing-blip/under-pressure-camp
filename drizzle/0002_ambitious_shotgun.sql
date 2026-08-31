@@ -1,0 +1,1 @@
+ALTER TABLE `campistas` MODIFY COLUMN `campistaKey` varchar(191) NOT NULL;

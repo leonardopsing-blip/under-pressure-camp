@@ -17,3 +17,8 @@
 - [x] Ajustar comidas al esquema por día: desayuno sábado/domingo, almuerzo sábado/domingo, cena viernes/sábado
 - [x] Implementar sincronización automática desde Forms hacia la hoja operativa nueva
 - [x] Reemplazar el logo generado por el logo oficial enviado por el usuario
+- [x] Revisar todos los pagos históricos del link de Registros y calcular porcentaje real pagado
+- [x] Corregir alertas para que campistas ya existentes no aparezcan como nuevos
+- [x] Enlazar Forms y Registros con la base de datos operativa del sistema
+- [x] Mejorar calidad visual, animaciones de ingreso y estilización de la información
+- [x] Probar nueva versión con datos reales y guardar checkpoint

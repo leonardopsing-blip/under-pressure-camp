@@ -49,7 +49,13 @@ function getPaymentStatusMap_() {
     if (!name) continue;
     const amount = Number(String(row[2] || '').replace(/[$,]/g, '')) || 0;
     const pending = Number(String(row[3] || '').replace(/[$,]/g, '')) || 0;
-    map[normalizeKey_(name)] = pending <= 0 ? 'pagado' : (amount > 0 ? 'abonado' : 'no_pagado');
+    const percentage = Math.max(0, Math.min(100, 100 - pending));
+    map[normalizeKey_(name)] = {
+      status: pending <= 0 ? 'pagado' : (amount > 0 ? 'abonado' : 'no_pagado'),
+      percentage,
+      amount,
+      pending,
+    };
   }
   return map;
 }
@@ -91,7 +97,10 @@ function syncCampistasOperacion() {
       yesNo_(row[18]),
       String(row[19] || '').trim(),
       String(row[20] || '').trim(),
-      paymentStatusMap[normalizeKey_(name)] || 'no_pagado',
+      (paymentStatusMap[normalizeKey_(name)] && paymentStatusMap[normalizeKey_(name)].status) || 'no_pagado',
+      (paymentStatusMap[normalizeKey_(name)] && paymentStatusMap[normalizeKey_(name)].percentage) || 0,
+      (paymentStatusMap[normalizeKey_(name)] && paymentStatusMap[normalizeKey_(name)].amount) || 0,
+      (paymentStatusMap[normalizeKey_(name)] && paymentStatusMap[normalizeKey_(name)].pending) || 100,
       i + 1,
       ''
     ]);

@@ -23,6 +23,9 @@ export interface Campista {
   allergyDetail: string;
   treatmentDiet: string;
   paymentStatus: PaymentStatus;
+  paidPercentage: number;
+  paidAmount: number;
+  pendingAmount: number;
   paymentStatusLabel: string;
   paymentStatusColor: string;
   sourceRow: number;

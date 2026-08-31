@@ -84,6 +84,16 @@ def payment_status(monto, pendiente):
     return 'no_pagado'
 
 
+def payment_percentage(monto, pendiente):
+    total = 100.0
+    if pendiente is not None:
+        paid = max(0.0, min(total, total - pendiente))
+        return round(paid, 2)
+    if monto is not None:
+        return round(max(0.0, min(total, monto)), 2)
+    return 0.0
+
+
 def main():
     campistas_values = load_values(BASE / 'campistas_full.json')
     registro_values = load_values(BASE / 'pagos_registro_full.json')
@@ -134,6 +144,7 @@ def main():
             'contact': clean(row[5] if len(row) > 5 else ''),
             'detail': clean(row[6] if len(row) > 6 else ''),
             'status': payment_status(monto, pendiente),
+            'paidPercentage': payment_percentage(monto, pendiente),
         })
 
     comprobantes = []

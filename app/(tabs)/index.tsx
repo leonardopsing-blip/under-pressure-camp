@@ -5,8 +5,37 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 
 import { ScreenContainer } from '@/components/screen-container';
 import { CampistaCard } from '@/components/campista-card';
-import { campData, findCampistaByScan, searchCampistas } from '@/lib/camp-data';
+import { findCampistaByScan, searchCampistas } from '@/lib/camp-data';
 import { loadOperationsState, saveOperationsState, type OperationsState } from '@/lib/operations-store';
+import { trpc } from '@/lib/trpc';
+
+type LiveCampista = {
+  id: string;
+  fullName: string;
+  idNumber: string;
+  age: string;
+  phone: string;
+  emergencyContacts: string[];
+  homeNetworkAttends: string;
+  homeNetworkName: string;
+  hasDisease: string;
+  diseaseDetail: string;
+  takesMedication: string;
+  medicationDetail: string;
+  hasAllergy: string;
+  allergyDetail: string;
+  treatmentDiet: string;
+  paymentStatus: 'pagado' | 'abonado' | 'no_pagado';
+  paidPercentage: number;
+  paidAmount: number;
+  pendingAmount: number;
+  paymentStatusLabel: string;
+  paymentStatusColor: string;
+  sourceRow: number;
+  paymentSourceRow: number | null;
+  paymentMethod: string;
+  paymentDetail: string;
+};
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -15,17 +44,68 @@ export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [operations, setOperations] = useState<OperationsState>({ meals: {}, payments: [], lastSeenCampistaIds: [] });
 
+  const syncLive = trpc.camp.syncLive.useMutation();
+  const listQuery = trpc.camp.list.useQuery(undefined, { refetchInterval: 30000 });
+  const alertsQuery = trpc.camp.alerts.useQuery(undefined, { refetchInterval: 30000 });
+
   useEffect(() => {
     loadOperationsState().then(setOperations);
+    syncLive.mutate();
   }, []);
 
-  const filtered = useMemo(() => searchCampistas(query), [query]);
-  const newCampistas = useMemo(() => {
-    const seen = new Set(operations.lastSeenCampistaIds);
-    return campData.campistas.filter((campista) => !seen.has(campista.id));
-  }, [operations.lastSeenCampistaIds]);
+  const liveCampistas = useMemo<LiveCampista[]>(() => {
+    if (!listQuery.data) return [];
+    return listQuery.data.map((item) => ({
+      id: item.idNumber,
+      fullName: item.fullName,
+      idNumber: item.idNumber,
+      age: item.age ?? '',
+      phone: item.phone ?? '',
+      emergencyContacts: [item.emergencyContact1, item.emergencyContact2].filter(Boolean) as string[],
+      homeNetworkAttends: item.homeNetworkAttends ?? '',
+      homeNetworkName: item.homeNetworkName ?? '',
+      hasDisease: item.hasDisease ?? '',
+      diseaseDetail: item.diseaseDetail ?? '',
+      takesMedication: item.takesMedication ?? '',
+      medicationDetail: item.medicationDetail ?? '',
+      hasAllergy: item.hasAllergy ?? '',
+      allergyDetail: item.allergyDetail ?? '',
+      treatmentDiet: item.treatmentDiet ?? '',
+      paymentStatus: (item.payment?.status ?? 'no_pagado') as 'pagado' | 'abonado' | 'no_pagado',
+      paidPercentage: Number(item.payment?.paidPercentage ?? 0),
+      paidAmount: Number(item.payment?.paidAmount ?? 0),
+      pendingAmount: Number(item.payment?.pendingAmount ?? 100),
+      paymentStatusLabel: item.payment?.status === 'pagado' ? 'Pagado' : item.payment?.status === 'abonado' ? 'Abonado' : 'No pagado',
+      paymentStatusColor: item.payment?.status === 'pagado' ? '#16A34A' : item.payment?.status === 'abonado' ? '#F59E0B' : '#DC2626',
+      sourceRow: item.sourceRow ?? 0,
+      paymentSourceRow: item.payment?.sourceRow ?? null,
+      paymentMethod: item.payment?.method ?? '',
+      paymentDetail: item.payment?.detail ?? '',
+    }));
+  }, [listQuery.data]);
 
-  const summary = campData.summary;
+  const filtered = useMemo(() => {
+    if (!query.trim()) return liveCampistas;
+    return searchCampistas(query).filter((campista) => liveCampistas.some((live) => live.idNumber === campista.idNumber));
+  }, [query, liveCampistas]);
+
+  const newCampistas = useMemo(() => {
+    return (alertsQuery.data ?? [])
+      .filter((alert) => alert.alertType === 'nuevo_campista' && alert.campista)
+      .map((alert) => ({
+        alertId: alert.id,
+        id: alert.campista!.idNumber,
+        fullName: alert.campista!.fullName,
+      }));
+  }, [alertsQuery.data]);
+
+  const summary = useMemo(() => {
+    const total = liveCampistas.length;
+    const pagado = liveCampistas.filter((c) => c.paymentStatus === 'pagado').length;
+    const abonado = liveCampistas.filter((c) => c.paymentStatus === 'abonado').length;
+    const noPagado = liveCampistas.filter((c) => c.paymentStatus === 'no_pagado').length;
+    return { total, pagado, abonado, noPagado };
+  }, [liveCampistas]);
 
   async function openScanner() {
     if (Platform.OS === 'web') {
@@ -54,7 +134,7 @@ export default function HomeScreen() {
   }
 
   async function markAlertsAsSeen() {
-    const next = { ...operations, lastSeenCampistaIds: campData.campistas.map((c) => c.id) };
+    const next = { ...operations, lastSeenCampistaIds: liveCampistas.map((c) => c.id) };
     setOperations(next);
     await saveOperationsState(next);
   }
@@ -63,13 +143,13 @@ export default function HomeScreen() {
     <ScreenContainer className="px-4 pb-4">
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <View className="gap-5 pt-4">
-          <View className="rounded-[28px] bg-primary p-5">
+          <View className="rounded-[28px] bg-primary p-4">
             <Text className="text-sm font-medium text-white/80">Under Pressure Camp</Text>
-            <Text className="mt-2 text-3xl font-bold text-white">Control QR de campistas</Text>
-            <Text className="mt-2 text-sm leading-6 text-white/85">
-              Escanea el QR, revisa datos críticos, marca comidas y registra pagos sin tocar los Sheets originales.
+            <Text className="mt-1 text-2xl font-bold text-white">Control QR de campistas</Text>
+            <Text className="mt-2 text-sm leading-5 text-white/85">
+              Escanea el QR, revisa datos críticos, marca comidas y registra pagos con información sincronizada desde los Sheets.
             </Text>
-            <View className="mt-5 gap-3">
+            <View className="mt-4 gap-2">
               <Pressable onPress={openScanner} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressedButton]}>
                 <Text className="text-center text-base font-bold text-primary">Escanear QR</Text>
               </Pressable>
@@ -83,11 +163,11 @@ export default function HomeScreen() {
             <View className="rounded-3xl border border-amber-300 bg-amber-50 p-4">
               <Text className="text-base font-bold text-amber-800">Nuevos campistas detectados</Text>
               <Text className="mt-1 text-sm text-amber-800">
-                Hay {newCampistas.length} campista(s) en la fuente de respuestas que aún no marcas como vistos.
+                Hay {newCampistas.length} campista(s) nuevos detectados desde la última revisión.
               </Text>
               <View className="mt-3 gap-2">
                 {newCampistas.slice(0, 3).map((campista) => (
-                  <Pressable key={campista.id} onPress={() => router.push((`/campista/${campista.id}?focus=pagos`) as Href)}>
+                  <Pressable key={campista.alertId} onPress={() => router.push((`/campista/${campista.id}?focus=pagos`) as Href)}>
                     <Text className="text-sm font-semibold text-amber-900">{campista.fullName}</Text>
                   </Pressable>
                 ))}
@@ -103,23 +183,23 @@ export default function HomeScreen() {
             </View>
           ) : null}
 
-          <View className="grid gap-3">
+          <View className="gap-3">
             <View className="rounded-3xl border border-border bg-surface p-4">
               <Text className="text-sm text-muted">Campistas registrados</Text>
-              <Text className="mt-2 text-3xl font-bold text-foreground">{summary.campistasCount}</Text>
+              <Text className="mt-2 text-3xl font-bold text-foreground">{summary.total}</Text>
             </View>
             <View className="flex-row gap-3">
               <View className="flex-1 rounded-3xl border border-emerald-200 bg-emerald-50 p-4">
                 <Text className="text-sm text-emerald-700">Pagados</Text>
-                <Text className="mt-2 text-2xl font-bold text-emerald-800">{summary.paymentStatusCounts.pagado}</Text>
+                <Text className="mt-2 text-2xl font-bold text-emerald-800">{summary.pagado}</Text>
               </View>
               <View className="flex-1 rounded-3xl border border-amber-200 bg-amber-50 p-4">
                 <Text className="text-sm text-amber-700">Abonados</Text>
-                <Text className="mt-2 text-2xl font-bold text-amber-800">{summary.paymentStatusCounts.abonado}</Text>
+                <Text className="mt-2 text-2xl font-bold text-amber-800">{summary.abonado}</Text>
               </View>
               <View className="flex-1 rounded-3xl border border-red-200 bg-red-50 p-4">
                 <Text className="text-sm text-red-700">No pagados</Text>
-                <Text className="mt-2 text-2xl font-bold text-red-800">{summary.paymentStatusCounts.no_pagado}</Text>
+                <Text className="mt-2 text-2xl font-bold text-red-800">{summary.noPagado}</Text>
               </View>
             </View>
           </View>
