@@ -13,6 +13,7 @@
 - [x] Implementar alerta de nuevos campistas
 - [x] Probar demo con datos reales
 - [x] Crear logo y branding de la app
-- [ ] Guardar primer checkpoint y entregar demo
+- [x] Guardar primer checkpoint y entregar demo
 - [x] Ajustar comidas al esquema por día: desayuno sábado/domingo, almuerzo sábado/domingo, cena viernes/sábado
 - [x] Implementar sincronización automática desde Forms hacia la hoja operativa nueva
+- [x] Reemplazar el logo generado por el logo oficial enviado por el usuario
