@@ -5,7 +5,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 
 import { ScreenContainer } from '@/components/screen-container';
 import { CampistaCard } from '@/components/campista-card';
-import { findCampistaByScan, searchCampistas } from '@/lib/camp-data';
+import { campData, findCampistaByScan, searchCampistas } from '@/lib/camp-data';
 import { loadOperationsState, saveOperationsState, type OperationsState } from '@/lib/operations-store';
 import { trpc } from '@/lib/trpc';
 
@@ -42,7 +42,7 @@ export default function HomeScreen() {
   const [query, setQuery] = useState('');
   const [scannerVisible, setScannerVisible] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
-  const [operations, setOperations] = useState<OperationsState>({ meals: {}, payments: [], lastSeenCampistaIds: [] });
+  const [operations, setOperations] = useState<OperationsState>({ meals: {}, payments: [], lastSeenCampistaIds: [], pendingMeals: [] });
 
   const syncLive = trpc.camp.syncLive.useMutation();
   const listQuery = trpc.camp.list.useQuery(undefined, { refetchInterval: 30000 });
@@ -54,7 +54,7 @@ export default function HomeScreen() {
   }, []);
 
   const liveCampistas = useMemo<LiveCampista[]>(() => {
-    if (!listQuery.data) return [];
+    if (!listQuery.data) return campData.campistas;
     return listQuery.data.map((item) => ({
       id: item.idNumber,
       fullName: item.fullName,
@@ -173,10 +173,10 @@ export default function HomeScreen() {
                 ))}
               </View>
               <View className="mt-4 flex-row gap-2">
-                <Pressable onPress={() => router.push('/(tabs)/campistas' as Href)} className="rounded-full bg-amber-600 px-4 py-2">
+                <Pressable onPress={() => router.push('/(tabs)/campistas' as Href)} style={({ pressed }) => [styles.alertPrimary, pressed && styles.pressedButton]}>
                   <Text className="text-sm font-semibold text-white">Revisar lista</Text>
                 </Pressable>
-                <Pressable onPress={markAlertsAsSeen} className="rounded-full border border-amber-400 px-4 py-2">
+                <Pressable onPress={markAlertsAsSeen} style={({ pressed }) => [styles.alertSecondary, pressed && styles.pressedButton]}>
                   <Text className="text-sm font-semibold text-amber-800">Marcar vistas</Text>
                 </Pressable>
               </View>
@@ -258,5 +258,18 @@ const styles = StyleSheet.create({
   pressedButton: {
     opacity: 0.9,
     transform: [{ scale: 0.98 }],
+  },
+  alertPrimary: {
+    borderRadius: 999,
+    backgroundColor: '#D97706',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  alertSecondary: {
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#FBBF24',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
 });

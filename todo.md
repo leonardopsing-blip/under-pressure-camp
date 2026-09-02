@@ -22,3 +22,13 @@
 - [x] Enlazar Forms y Registros con la base de datos operativa del sistema
 - [x] Mejorar calidad visual, animaciones de ingreso y estilización de la información
 - [x] Probar nueva versión con datos reales y guardar checkpoint
+- [ ] Generar códigos QR de cada campista dentro del nuevo Sheet operativo
+- [ ] Mejorar ficha del campista: más detalle, mayor tamaño y mejor estilización visual
+- [ ] Mostrar el QR del campista dentro de la app
+- [ ] Probar y guardar checkpoint con QR y nueva ficha
+
+- [x] Adaptar navegación, permisos y configuración para iOS manteniendo compatibilidad con Android
+- [x] Corregir el registro y persistencia de almuerzos de sábado y domingo
+- [x] Habilitar instalación como acceso web/PWA en iPhone y Android
+- [x] Añadir caché local y cola de cambios para funcionamiento offline básico
+- [x] Validar comportamiento multiplataforma y guardar checkpoint

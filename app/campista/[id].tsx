@@ -7,8 +7,9 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { ScreenContainer } from '@/components/screen-container';
 import { InfoCard, InfoRow } from '@/components/info-card';
 import { StatusBadge } from '@/components/status-badge';
-import { getPaymentBadgeClasses, getPaymentLabel } from '@/lib/camp-data';
+import { campData, getPaymentBadgeClasses, getPaymentLabel } from '@/lib/camp-data';
 import { trpc } from '@/lib/trpc';
+import { clearPendingMeal, emptyMealState, loadOperationsState, markMealLocally, type OperationsState } from '@/lib/operations-store';
 
 const mealConfig = {
   desayuno: {
@@ -49,24 +50,74 @@ export default function CampistaDetailScreen() {
   const params = useLocalSearchParams<{ id?: string; focus?: string }>();
   const detailQuery = trpc.camp.detail.useQuery({ idNumber: params.id ?? '' }, { enabled: Boolean(params.id), refetchInterval: 30000 });
   const markMeal = trpc.camp.markMeal.useMutation({
-    onSuccess: () => detailQuery.refetch(),
+    onSuccess: async (_result, variables) => {
+      const next = await clearPendingMeal(variables.idNumber, variables.mealType, variables.mealDay);
+      setOperations(next);
+      detailQuery.refetch();
+    },
   });
   const addPaymentEntry = trpc.camp.addPaymentEntry.useMutation({
     onSuccess: () => detailQuery.refetch(),
   });
 
+  const [operations, setOperations] = useState<OperationsState>({ meals: {}, payments: [], lastSeenCampistaIds: [], pendingMeals: [] });
   const [paymentType, setPaymentType] = useState<'abono' | 'pago_completo'>('abono');
   const [method, setMethod] = useState<'efectivo' | 'transferencia' | 'deposito' | 'datafacil'>('efectivo');
   const [detail, setDetail] = useState('');
   const [receiptUri, setReceiptUri] = useState<string | undefined>();
 
+  useEffect(() => {
+    loadOperationsState().then(setOperations);
+  }, []);
+
   const data = detailQuery.data;
-  const campista = data?.campista;
-  const payment = data?.payment;
-  const meals = data?.meals ?? [];
+  const localCampista = campData.campistas.find((item) => item.idNumber === params.id);
+  const fallbackCampista = localCampista
+    ? {
+        id: 0,
+        fullName: localCampista.fullName,
+        idNumber: localCampista.idNumber,
+        age: localCampista.age,
+        phone: localCampista.phone,
+        emergencyContact1: localCampista.emergencyContacts[0] ?? '',
+        emergencyContact2: localCampista.emergencyContacts[1] ?? '',
+        homeNetworkAttends: localCampista.homeNetworkAttends,
+        homeNetworkName: localCampista.homeNetworkName,
+        hasDisease: localCampista.hasDisease,
+        diseaseDetail: localCampista.diseaseDetail,
+        takesMedication: localCampista.takesMedication,
+        medicationDetail: localCampista.medicationDetail,
+        hasAllergy: localCampista.hasAllergy,
+        allergyDetail: localCampista.allergyDetail,
+        treatmentDiet: localCampista.treatmentDiet,
+      }
+    : null;
+  const campista = data?.campista ?? fallbackCampista;
+  const payment = data?.payment ?? (localCampista ? {
+    status: localCampista.paymentStatus,
+    paidPercentage: String(localCampista.paidPercentage),
+    paidAmount: String(localCampista.paidAmount),
+    pendingAmount: String(localCampista.pendingAmount),
+    method: localCampista.paymentMethod,
+  } : null);
+  const remoteMeals = data?.meals ?? [];
+  const localMealState = operations.meals[campista?.idNumber ?? ''] ?? emptyMealState;
+  const meals = [
+    ...remoteMeals,
+    ...(['desayuno', 'almuerzo', 'cena'] as MealType[]).flatMap((mealType) =>
+      Object.entries(localMealState[mealType]).filter(([, marked]) => marked).map(([mealDay]) => ({ mealType, mealDay, marked: true })),
+    ),
+  ];
   const entries = data?.entries ?? [];
 
   const paidPercentage = useMemo(() => Number(payment?.paidPercentage ?? 0), [payment?.paidPercentage]);
+
+  useEffect(() => {
+    if (!campista) return;
+    operations.pendingMeals
+      .filter((item) => item.campistaId === campista.idNumber)
+      .forEach((item) => markMeal.mutate({ idNumber: item.campistaId, mealType: item.mealType, mealDay: item.mealDay }));
+  }, [campista?.idNumber, operations.pendingMeals.length]);
 
   if (!campista) {
     return (
@@ -78,6 +129,17 @@ export default function CampistaDetailScreen() {
         </Pressable>
       </ScreenContainer>
     );
+  }
+
+  async function toggleMeal(mealType: MealType, mealDay: string) {
+    if (!campista) return;
+    const current = operations.meals[campista.idNumber] ?? emptyMealState;
+    if (current[mealType][mealDay as keyof typeof current[typeof mealType]]) {
+      return;
+    }
+    const next = await markMealLocally(campista.idNumber, mealType, mealDay);
+    setOperations(next);
+    markMeal.mutate({ idNumber: campista.idNumber, mealType, mealDay });
   }
 
   async function pickReceipt(fromCamera: boolean) {
@@ -160,7 +222,7 @@ export default function CampistaDetailScreen() {
                           key={slot.key}
                           label={slot.label}
                           checked={checked}
-                          onPress={() => markMeal.mutate({ idNumber: campista.idNumber, mealType: type, mealDay: slot.key })}
+                          onPress={() => toggleMeal(type, slot.key)}
                         />
                       );
                     })}

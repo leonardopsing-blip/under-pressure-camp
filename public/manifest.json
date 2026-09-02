@@ -1,0 +1,14 @@
+{
+  "name": "Under Pressure Camp",
+  "short_name": "UP Camp",
+  "description": "Control de campistas, comidas y pagos de Under Pressure Camp.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f8fa",
+  "theme_color": "#2457d6",
+  "icons": [
+    { "src": "/assets/images/icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/images/icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

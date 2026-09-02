@@ -4,7 +4,7 @@ import { useRouter, type Href } from 'expo-router';
 
 import { ScreenContainer } from '@/components/screen-container';
 import { CampistaCard } from '@/components/campista-card';
-import { searchCampistas } from '@/lib/camp-data';
+import { campData, searchCampistas } from '@/lib/camp-data';
 import { trpc } from '@/lib/trpc';
 
 export default function CampistasScreen() {
@@ -13,13 +13,24 @@ export default function CampistasScreen() {
   const listQuery = trpc.camp.list.useQuery(undefined, { refetchInterval: 30000 });
 
   const data = useMemo(() => {
-    const live = (listQuery.data ?? []).map((item) => ({
+    const source = listQuery.data ?? campData.campistas;
+    const live = source.map((item) => {
+      const payment = 'payment' in item ? item.payment : {
+        status: item.paymentStatus,
+        paidPercentage: String(item.paidPercentage),
+        paidAmount: String(item.paidAmount),
+        pendingAmount: String(item.pendingAmount),
+        sourceRow: item.paymentSourceRow,
+        method: item.paymentMethod,
+        detail: item.paymentDetail,
+      };
+      return {
       id: item.idNumber,
       fullName: item.fullName,
       idNumber: item.idNumber,
       age: item.age ?? '',
       phone: item.phone ?? '',
-      emergencyContacts: [item.emergencyContact1, item.emergencyContact2].filter(Boolean) as string[],
+      emergencyContacts: ('emergencyContact1' in item ? [item.emergencyContact1, item.emergencyContact2] : item.emergencyContacts).filter(Boolean) as string[],
       homeNetworkAttends: item.homeNetworkAttends ?? '',
       homeNetworkName: item.homeNetworkName ?? '',
       hasDisease: item.hasDisease ?? '',
@@ -29,17 +40,18 @@ export default function CampistasScreen() {
       hasAllergy: item.hasAllergy ?? '',
       allergyDetail: item.allergyDetail ?? '',
       treatmentDiet: item.treatmentDiet ?? '',
-      paymentStatus: (item.payment?.status ?? 'no_pagado') as 'pagado' | 'abonado' | 'no_pagado',
-      paidPercentage: Number(item.payment?.paidPercentage ?? 0),
-      paidAmount: Number(item.payment?.paidAmount ?? 0),
-      pendingAmount: Number(item.payment?.pendingAmount ?? 100),
-      paymentStatusLabel: item.payment?.status === 'pagado' ? 'Pagado' : item.payment?.status === 'abonado' ? 'Abonado' : 'No pagado',
-      paymentStatusColor: item.payment?.status === 'pagado' ? '#16A34A' : item.payment?.status === 'abonado' ? '#F59E0B' : '#DC2626',
+      paymentStatus: (payment?.status ?? 'no_pagado') as 'pagado' | 'abonado' | 'no_pagado',
+      paidPercentage: Number(payment?.paidPercentage ?? 0),
+      paidAmount: Number(payment?.paidAmount ?? 0),
+      pendingAmount: Number(payment?.pendingAmount ?? 100),
+      paymentStatusLabel: payment?.status === 'pagado' ? 'Pagado' : payment?.status === 'abonado' ? 'Abonado' : 'No pagado',
+      paymentStatusColor: payment?.status === 'pagado' ? '#16A34A' : payment?.status === 'abonado' ? '#F59E0B' : '#DC2626',
       sourceRow: item.sourceRow ?? 0,
-      paymentSourceRow: item.payment?.sourceRow ?? null,
-      paymentMethod: item.payment?.method ?? '',
-      paymentDetail: item.payment?.detail ?? '',
-    }));
+      paymentSourceRow: payment?.sourceRow ?? null,
+      paymentMethod: payment?.method ?? '',
+      paymentDetail: payment?.detail ?? '',
+      };
+    });
     if (!query.trim()) return live;
     const localMatches = new Set(searchCampistas(query).map((item) => item.idNumber));
     return live.filter((item) => localMatches.has(item.idNumber));

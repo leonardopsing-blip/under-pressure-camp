@@ -51,7 +51,10 @@ const config: ExpoConfig = {
     supportsTablet: true,
     bundleIdentifier: env.iosBundleId,
     "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Under Pressure Camp usa la cámara para escanear el código QR del campista.",
+        "NSPhotoLibraryUsageDescription": "Under Pressure Camp permite seleccionar comprobantes de pago.",
+        "NSPhotoLibraryAddUsageDescription": "Under Pressure Camp puede guardar comprobantes cuando el usuario lo solicita."
       }
   },
   android: {
@@ -86,6 +89,14 @@ const config: ExpoConfig = {
   },
   plugins: [
     "expo-router",
+    [
+      "expo-camera",
+      {
+        cameraPermission: "Under Pressure Camp usa la cámara para escanear el código QR del campista.",
+        microphonePermission: "Under Pressure Camp usa el micrófono solo cuando una función compatible lo requiere.",
+        recordAudioAndroid: false,
+      },
+    ],
     [
       "expo-audio",
       {

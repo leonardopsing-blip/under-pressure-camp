@@ -298,7 +298,7 @@ export const appRouter = router({
       return { campista, payment, meals, entries };
     }),
 
-    markMeal: protectedProcedure.input(z.object({
+    markMeal: publicProcedure.input(z.object({
       idNumber: z.string(),
       mealType: z.enum(["desayuno", "almuerzo", "cena"]),
       mealDay: z.string(),
